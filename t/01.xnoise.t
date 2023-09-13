@@ -6,7 +6,7 @@ use lib '../lib';
 
 use Test::More;
 
-use Smart::Comments;
+#use Smart::Comments;
 
 use Crypt::OpenSSL::EC;
 use Crypt::OpenSSL::Bignum;
@@ -463,24 +463,24 @@ my $a_hs = new_handshake_state(
         psk    => $psk,
         psk_id => $psk_id,
 
-        s_priv => pem_read_pkey( $FindBin::Bin . '/a_s_priv.pem', 1 ),
-        s_pub  => pem_read_pkey( $FindBin::Bin . '/a_s_pub.pem',  0 ),
-        m_priv => pem_read_pkey( $FindBin::Bin . '/a_m_priv.pem', 1 ),
-        m_pub  => pem_read_pkey( $FindBin::Bin . '/a_m_pub.pem',  0 ),
-        rs_pub => pem_read_pkey( $FindBin::Bin . '/b_s_pub.pem',  0 ),
-        rm_pub => pem_read_pkey( $FindBin::Bin . '/b_m_pub.pem',  0 ),
+        s_priv => read_priv_pkey_from_pem( $FindBin::Bin . '/a_s_priv.pem' ),
+        s_pub  => read_pub_pkey_from_pem( $FindBin::Bin . '/a_s_pub.pem',   ),
+        m_priv => read_priv_pkey_from_pem( $FindBin::Bin . '/a_m_priv.pem',  ),
+        m_pub  => read_pub_pkey_from_pem( $FindBin::Bin . '/a_m_pub.pem',   ),
+        rs_pub => read_pub_pkey_from_pem( $FindBin::Bin . '/b_s_pub.pem',   ),
+        rm_pub => read_pub_pkey_from_pem( $FindBin::Bin . '/b_m_pub.pem',   ),
 
         s_pub_type  => 'raw',
-        s_pub_bin   => pack( "H*", pem_read_pub_hex( $FindBin::Bin . '/a_s_pub.pem', 2 ) ),
+        s_pub_bin   => pack( "H*", read_ec_pubkey_from_pem( $FindBin::Bin . '/a_s_pub.pem' ) ),
 
         m_pub_type  => 'raw',
-        m_pub_bin   => pack( "H*", pem_read_pub_hex( $FindBin::Bin . '/a_m_pub.pem', 2 ) ),
+        m_pub_bin   => pack( "H*", read_ec_pubkey_from_pem( $FindBin::Bin . '/a_m_pub.pem',  ) ),
 
         rs_pub_type => 'raw',
-        rs_pub_bin  => pack( "H*", pem_read_pub_hex( $FindBin::Bin . '/a_rs_pub.pem', 2 ) ),
+        rs_pub_bin  => pack( "H*", read_ec_pubkey_from_pem( $FindBin::Bin . '/a_rs_pub.pem',  ) ),
 
         rm_pub_type => 'raw',
-        rm_pub_bin  => pack( "H*", pem_read_pub_hex( $FindBin::Bin . '/a_rm_pub.pem', 2 ) ),
+        rm_pub_bin  => pack( "H*", read_ec_pubkey_from_pem( $FindBin::Bin . '/a_rm_pub.pem',  ) ),
     },
 );
 return $a_hs;
@@ -502,26 +502,26 @@ my ($xnoise_conf, $pattern_name, $psk, $psk_id) = @_;
                 psk    => $psk,
                 psk_id => $psk_id,
 
-                s_priv => pem_read_pkey( $FindBin::Bin . '/b_s_priv.pem', 1 ),
-                s_pub  => pem_read_pkey( $FindBin::Bin . '/b_s_pub.pem',  0 ),
+                s_priv => read_priv_pkey_from_pem( $FindBin::Bin . '/b_s_priv.pem',  ),
+                s_pub  => read_pub_pkey_from_pem( $FindBin::Bin . '/b_s_pub.pem',   ),
 
-                m_priv => pem_read_pkey( $FindBin::Bin . '/b_m_priv.pem', 1 ),
-                m_pub  => pem_read_pkey( $FindBin::Bin . '/b_m_pub.pem',  0 ),
+                m_priv => read_priv_pkey_from_pem( $FindBin::Bin . '/b_m_priv.pem',  ),
+                m_pub  => read_pub_pkey_from_pem( $FindBin::Bin . '/b_m_pub.pem',   ),
 
-                rs_pub => pem_read_pkey( $FindBin::Bin . '/a_s_pub.pem',  0 ),
-                rm_pub => pem_read_pkey( $FindBin::Bin . '/a_m_pub.pem',  0 ),
+                rs_pub => read_pub_pkey_from_pem( $FindBin::Bin . '/a_s_pub.pem',   ),
+                rm_pub => read_pub_pkey_from_pem( $FindBin::Bin . '/a_m_pub.pem',   ),
 
                 s_pub_type  => 'raw',
-                s_pub_bin   => pack( "H*", pem_read_pub_hex( $FindBin::Bin . '/b_s_pub.pem', 2 ) ),
+                s_pub_bin   => pack( "H*", read_ec_pubkey_from_pem( $FindBin::Bin . '/b_s_pub.pem',  ) ),
 
                 rs_pub_type => 'raw',
-                rs_pub_bin  => pack( "H*", pem_read_pub_hex( $FindBin::Bin . '/b_rs_pub.pem', 2 ) ),
+                rs_pub_bin  => pack( "H*", read_ec_pubkey_from_pem( $FindBin::Bin . '/b_rs_pub.pem',  ) ),
 
                 m_pub_type  => 'raw',
-                m_pub_bin   => pack( "H*", pem_read_pub_hex( $FindBin::Bin . '/b_m_pub.pem', 2 ) ),
+                m_pub_bin   => pack( "H*", read_ec_pubkey_from_pem( $FindBin::Bin . '/b_m_pub.pem',  ) ),
 
                 rm_pub_type => 'raw',
-                rm_pub_bin  => pack( "H*", pem_read_pub_hex( $FindBin::Bin . '/b_rm_pub.pem', 2 ) ),
+                rm_pub_bin  => pack( "H*", read_ec_pubkey_from_pem( $FindBin::Bin . '/b_rm_pub.pem',  ) ),
             } );
         return $b_hs;
 }
